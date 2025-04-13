@@ -1,0 +1,6 @@
+@OrderMonitoring_HostAddress = http://localhost:7000
+
+GET {{OrderMonitoring_HostAddress}}/orders/
+Accept: application/json
+
+###

@@ -1,0 +1,18 @@
+# .NET
+**/.vs/
+**/bin/
+**/obj/
+**/out/
+*.dll
+*.exe
+*.pdb
+*.nuget
+*.log
+*.user
+*.lock.json
+*.csproj.user
+*.suo
+*.userosscache
+*.sln.docstates
+**/.idea/
+**/.env
