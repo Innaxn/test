@@ -10,11 +10,6 @@ namespace OrderMonitoring.Business
         {
             _orderEximiusRepository = orderEximiusRepository;
         }
-        public async Task<IEnumerable<OrderDto>> GetOrdersAsync()
-        {
-            var orders = await _orderEximiusRepository.GetOrdersAsync();
-            return orders;
-        }
         public async Task<OrderDto?> GetOrderByIdAsync(int number)
         {
             return await _orderEximiusRepository.GetOrderByIdAsync(number);

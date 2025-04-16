@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using OrderMonitoring.Domain.Thresholds;
 using OrderMonitoring.Infrastructure;
+using OrderMonitoring.Infrastructure.SignalR;
+using OrderMonitoring.Infrastructure.SignalR.Hubs;
 using OrderMonitoring.Model;
 
 namespace OrderMonitoring.Business
@@ -21,10 +23,10 @@ namespace OrderMonitoring.Business
                 AlertEnum.MsTeams => new TeamsAlertChannel(
                     _serviceProvider.GetRequiredService<IHttpClientFactory>()
                 ),
-                //AlertEnum.SignalR => new SignalRAlertChannel(
-                //    _serviceProvider.GetRequiredService<IHubContext<AlertHub>>(),
-                //    _serviceProvider.GetRequiredService<ILogger<SignalRAlertChannel>>()
-                //),
+                AlertEnum.SignalR => new SignalRAlertChannel(
+                    _serviceProvider.GetRequiredService<IHubContext<AlertHub, IAlertClient>>(),
+                    _serviceProvider.GetRequiredService<ILogger<SignalRAlertChannel>>()
+                ),
                 AlertEnum.Console => new ConsoleAlertServiceS(),
                 _ => throw new ArgumentException("Invalid alert type")
             };

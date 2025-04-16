@@ -40,7 +40,7 @@ namespace OrderMonitoring.Domain.Thresholds
     {
         public Task SendAlertAsync(AlertMessage message)
         {
-            Console.WriteLine($"Alert: Order {message.Content} ");
+            Console.WriteLine($"Alertaaaaa: Order {message.Content} ");
             return Task.CompletedTask;
         }
 

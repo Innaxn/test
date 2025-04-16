@@ -2,6 +2,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using OrderMonitoring.Infrastructure.SignalR.Hubs;
 
 namespace OrderMonitoring.Controllers
 {
@@ -13,6 +15,7 @@ namespace OrderMonitoring.Controllers
         private readonly INotificationSender _inotificationSender;
         private readonly NotificationSender _notificationSender;
 
+
         public NotificationsController(ILogger<NotificationsController> logger, INotificationSender inotificationSender, NotificationSender notificationSender)
         {
             _logger = logger;
@@ -21,6 +24,41 @@ namespace OrderMonitoring.Controllers
 
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> SendNotification([FromBody] NotificationRequest request)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    try
+        //    {
+        //        // Log the incoming request
+        //        _logger.LogInformation("Received notification request: {Title}", request.Title);
+
+        //        // Send the notification using the service
+        //        var response = await _notificationSender.SendNotificationAsync(request);
+
+        //        // Check if the request was successful
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            _logger.LogInformation("Notification sent successfully to {WebhookUrl}", request.WebhookUrl);
+        //            return Ok(new { success = true, message = "Notification sent successfully" });
+        //        }
+        //        else
+        //        {
+        //            var errorMessage = $"Failed to send notification. Status code: {response.StatusCode}";
+        //            _logger.LogError(errorMessage);
+        //            return StatusCode((int)response.StatusCode, new { success = false, message = errorMessage });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Error sending notification");
+        //        return StatusCode(500, new { success = false, message = $"Internal server error: {ex.Message}" });
+        //    }
+        //}
         [HttpPost]
         public async Task<IActionResult> SendNotification([FromBody] NotificationRequest request)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using OrderMonitoring.Infrastructure.SignalR.Hubs;
 using OrderMonitoring.Model;
 
@@ -6,9 +7,9 @@ namespace OrderMonitoring.Infrastructure.SignalR
 {
     public class SignalRAlertChannel : IAlertChannel
     {
-        public readonly IHubContext<AlertHub> _hubContext;
+        public readonly IHubContext<AlertHub, IAlertClient> _hubContext;
         public readonly ILogger<SignalRAlertChannel> _logger;
-        public SignalRAlertChannel(IHubContext<AlertHub> hubContext, ILogger<SignalRAlertChannel> logger)
+        public SignalRAlertChannel(IHubContext<AlertHub, IAlertClient> hubContext, ILogger<SignalRAlertChannel> logger)
         {
             _hubContext = hubContext;
             _logger = logger;
@@ -18,13 +19,15 @@ namespace OrderMonitoring.Infrastructure.SignalR
         {
             try
             {
-                await _hubContext.Clients.All.SendAsync("ReceiveAlert", message);
-                // _logger.LogInformation($"Alert sent: {message.Content}");
+                //await _hubContext.Clients.All.SendAsync("ReceiveAlert", message);
+                await _hubContext.Clients.All.ReceiveAlert(message);
+                _logger.LogInformation($"Alert sent thorugh SignalR: {message.Content}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, "Error sending alert");
+                _logger.LogError(ex.Message, "Error sending alert with SignalR");
             }
         }
+
     }
 }

@@ -1,5 +1,7 @@
 using DotNetEnv;
+using Hangfire;
 using OrderMonitoring;
+using OrderMonitoring.Infrastructure;
 using OrderMonitoring.Infrastructure.SignalR.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,17 +10,6 @@ if (builder.Environment.IsDevelopment())
     // laod env vars
     Env.Load();
 }
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowAll",
-//         builder =>
-//         {
-//             builder.AllowAnyOrigin()
-//                 .AllowAnyMethod()
-//                 .AllowAnyHeader();
-//         });
-//});
-
 
 DependencyInjection.ConfigureServices(builder.Services);
 
@@ -26,21 +17,19 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-
+    app.UseHangfireDashboard("/hangfire");
 }
 app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<AlertHub>("/hubs/alert-hub");
-    endpoints.MapHub<OrderHub>("/hubs/order-hub");
-});
+RecurringJob.AddOrUpdate<MonitoringAlertJob>(
+    "order-polling-job",
+    job => job.ExecuteMonitoringCycleAsync(),
+    Cron.MinuteInterval(1));
 
+app.UseRouting();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-//app.UseCors("AllowAll");
-
+app.MapHub<AlertHub>("/alert");
+app.UseCors("DashboardPolicy");
 app.Run();

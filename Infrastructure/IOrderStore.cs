@@ -4,13 +4,15 @@ namespace OrderMonitoring.Infrastructure
 {
     public interface IOrderStore
     {
-        Task<OrderDto> GetOrderAsync(Guid objId);
-        Task SaveOrUpdateAsync(OrderDto order);
+        Task<OrderDtoWithTime> GetOrderAsync(Guid objId);
+        Task SaveOrUpdateAsync(OrderDtoWithTime order);
         Task<bool> IsAlertSentAsync(Guid objId, int statusId, DateTime statusDate);
         Task MarkAlertSentAsync(Guid objId, int statusId, DateTime statusDate);
 
-        Task<List<OrderDto>> GetAllOrders();
+        Task<List<OrderDtoWithTime>> GetAllOrders();
         DateTime LastFetchedTime { get; set; }
+        Task RemoveOrdersOlderThanAsync(DateTime cutoff);
+        Task CleanupAlertHistoryOrderThatAsync(DateTime cutoff);
 
     }
 }

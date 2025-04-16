@@ -8,8 +8,9 @@ namespace OrderMonitoring.Business
 
         public AlertManager(AlertFactory factory)
         {
-            //var alertWays = new List<AlertEnum> { AlertEnum.MsTeams, AlertEnum.Console, AlertEnum.SignalR };
-            var alertWays = new List<AlertEnum> {AlertEnum.Console, AlertEnum.MsTeams};
+            //AlertEnum.MsTeams,
+            var alertWays = new List<AlertEnum> { AlertEnum.MsTeams, AlertEnum.Console, AlertEnum.SignalR };
+            //var alertWays = new List<AlertEnum> {AlertEnum.Console, AlertEnum.MsTeams };
 
             foreach (var alertWay in alertWays)
             {
@@ -27,7 +28,7 @@ namespace OrderMonitoring.Business
             _alertChannels.Add(alertChannel);
         }
 
-        public void TriggerAlerts(AlertMessage alertMessage)
+        public async Task TriggerAlerts(AlertMessage alertMessage)
         {
             foreach(var alertChannel in _alertChannels)
             {

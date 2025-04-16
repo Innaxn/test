@@ -1,6 +1,6 @@
 ﻿using OrderMonitoring.Domain.Thresholds;
 
-namespace OrderMonitoring.Infrastructure
+namespace OrderMonitoring.Infrastructure.Repositories
 {
     public class InMemoryThresholdProvider : IThresholdProvider
     {

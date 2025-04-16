@@ -2,9 +2,9 @@
 {
     public enum QueryType
     {
-        GetAllActiveOrders,
         GetOrderById,
-        GetActiveOrdersByStatusCount,
-        GetOrdersSinceLastFetch
+        GetOrdersAmountPerStatus,
+        GetOrdersWithTimeStatus, // s razlika
+        GetOrdersTrend
     }
 }
